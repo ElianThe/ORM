@@ -21,6 +21,19 @@ class Query
         ConnectionFactory::makeConnection(parse_ini_file("conf.ini"));
     }
 
+    public function one(){
+        $pdo = ConnectionFactory::getConnection();
+
+        $pdo->query(<<<SQL
+                    SELECT $this->fields 
+                    FROM $this->sqlTable 
+                    $this->where
+                    $this->sql;
+                 SQL);
+        $this->sql .= " LIMIT 1";
+        return $this;
+    }
+
 
     public static function table(string $table): Query
     {
