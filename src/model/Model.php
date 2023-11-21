@@ -9,13 +9,12 @@ abstract class Model {
     protected static $table;
     protected static $idColumn = 'id';
 
-    protected $atts = [];
+    protected $atts;
 
     public function __construct(array $fillable = [])
     {
-        if (!is_null($fillable)) {
-            $this->_atts = $fillable;
-        }
+        $this->atts = !is_null($fillable) ? $this->_atts = $fillable : [];
+
     }
 
     public function __get($name)
