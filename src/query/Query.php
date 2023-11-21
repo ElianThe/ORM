@@ -26,29 +26,38 @@ class Query
 
     public function get(): void
     {
-        $this->sql = "SELECT $this->fields FROM $this->sqlTable".$this->where;
+        $this->sql = <<<SQL
+                    SELECT $this->fields 
+                    FROM $this->sqlTable 
+                    $this->where;
+                 SQL;
         var_dump($this->sql);
     }
 
     public function select(string ...$cols): Query
     {
-        /**
-        foreach ($cols as $col)
-            $this->fields .= (array_key_last($cols) !== $col) ? $col . "," : $col ; */
         $this->fields = implode(",",$cols);
         return $this;
     }
 
     public function delete(): void
     {
-        $this->sql = "DELETE FROM $this->sqlTable" . $this->where;
+        $this->sql = <<<SQL
+                    DELETE;
+                    FROM $this->sqlTable
+                    $this->where;
+                    SQL;
         var_dump($this->sql);
     }
 
     public function insert(array $newRow): void
     {
         $row = implode(",",$newRow);
-        $this->sql = "INSERT INTO $this->sqlTable VALUES ($row)" . $this->where;
+        $this->sql = <<<SQL
+            INSERT INTO $this->sqlTable 
+            VALUES ($row)
+            $this->where;
+            SQL;
         var_dump($this->sql);
     }
 }
