@@ -2,6 +2,8 @@
 
 namespace iutnc\hellokant\query;
 
+use iutnc\hellokant\factory\ConnectionFactory;
+
 class Query
 {
     private string $sqlTable;
@@ -10,11 +12,19 @@ class Query
     private $args = [];
     private $sql = '';
 
+    /**
+     * @param string $sqlTable
+     */
+    public function __construct(string $sqlTable)
+    {
+        $this->sqlTable = $sqlTable;
+        ConnectionFactory::makeConnection(parse_ini_file("conf.ini"));
+    }
+
+
     public static function table(string $table): Query
     {
-        $query = new Query();
-        $query->sqlTable = $table;
-        return $query;
+        return new Query($table);
     }
 
     public function where(string $col, string $op, mixed $val): Query
@@ -24,14 +34,16 @@ class Query
         return $this;
     }
 
-    public function get(): void
+    public function get(): bool|\PDOStatement
     {
-        $this->sql = <<<SQL
+        $pdo = ConnectionFactory::getConnection();
+
+        return $pdo->query(<<<SQL
                     SELECT $this->fields 
                     FROM $this->sqlTable 
                     $this->where;
-                 SQL;
-        var_dump($this->sql);
+                 SQL);
+
     }
 
     public function select(string ...$cols): Query
@@ -40,24 +52,27 @@ class Query
         return $this;
     }
 
-    public function delete(): void
+    public function delete(): bool|int
     {
-        $this->sql = <<<SQL
+        $pdo = ConnectionFactory::getConnection();
+
+        return $pdo->exec(<<<SQL
                     DELETE;
                     FROM $this->sqlTable
                     $this->where;
-                    SQL;
-        var_dump($this->sql);
+                    SQL);
     }
 
-    public function insert(array $newRow): void
+    public function insert(array $newRow): bool|string
     {
         $row = implode(",",$newRow);
-        $this->sql = <<<SQL
+        $pdo = ConnectionFactory::getConnection();
+
+        $pdo->exec(<<<SQL
             INSERT INTO $this->sqlTable 
             VALUES ($row)
             $this->where;
-            SQL;
-        var_dump($this->sql);
+            SQL);
+        return $pdo->lastInsertId();
     }
 }
