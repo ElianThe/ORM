@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\hellokant\query;
+namespace iutnc\hellokant\factory;
 
 use PDO;
 
