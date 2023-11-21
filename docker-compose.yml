@@ -1,0 +1,25 @@
+version: '3'
+networks:
+  orm.net :
+    driver: bridge
+
+services:
+
+    orm.db:
+      image: 'mariadb:latest'
+      command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+      env_file: ./orm.env
+      ports:
+        - '3308:3306'
+      networks:
+        - orm.net
+      volumes:
+        - ./sql:/var/sql
+
+    adminer:
+      image: adminer
+      env_file: ./orm.env
+      ports:
+        - '8088:8080'
+      networks:
+        - orm.net
