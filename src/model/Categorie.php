@@ -2,34 +2,31 @@
 
 namespace iutnc\hellokant\model;
 
-class Article extends Model
-{
-    protected static $table = 'articles';
+class Categorie extends Model {
+    protected static $table = 'categories';
     protected static $idColumn = 'id';
 
     protected $atts = [
         'id',
         'nom',
         'descr',
-        'tarif',
-        'id_categ',
     ];
 
     public function __construct(array $tab = [])
     {
         $this->data = $tab;
     }
-    public function __get($nom) {
-        if (method_exists($this, $nom)) {
-            return $this->$nom();
-        }
+    public function __get($nom)
+    {
         return array_key_exists($nom, $this->data) ? $this->data[$nom] : null;
     }
-    public function __set($nom, $valeur) {
+    public function __set($nom, $valeur)
+    {
         $this->data[$nom] = $valeur;
     }
 
-    function categorie(){
-        return parent::belongs_to(Categorie::class, "id_categorie");
+    function articles(){
+        return parent::has_many(Article::class, "id_categorie");
     }
+
 }
