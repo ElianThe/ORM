@@ -1,0 +1,41 @@
+version : "3"
+networks :
+  doctrine.net :
+    driver : bridge
+
+services :
+
+  db_postgres :
+    image : postgres:latest
+    env_file : ./doctrine.env
+    volumes :
+      - ./sql:/var/sql
+    ports :
+      - "5432:5432"
+    networks :
+      - doctrine.net
+
+
+
+  adminer :
+    image : adminer
+    env_file:
+      - ./doctrine.env
+    ports :
+      - "8080:8080"
+    networks :
+      - doctrine.net
+
+  services.php :
+    image : canals/php
+    ports :
+      - '188:80'
+    volumes:
+      - "./src:/var/www"
+    working_dir: /var/www
+    env_file:
+      - ./doctrine.env
+    networks:
+      - doctrine.net
+    depends_on:
+      - db_postgres

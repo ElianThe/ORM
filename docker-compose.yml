@@ -23,3 +23,16 @@ services:
         - '8088:8080'
       networks:
         - orm.net
+
+    orm_back :
+      image: 'canals/php:latest'
+      env_file: ./orm.env
+      ports:
+        - '180:80'
+      volumes:
+        - ./test:/var/www
+      working_dir: /var/www/
+      networks:
+        orm.net:
+      depends_on:
+        - orm.db

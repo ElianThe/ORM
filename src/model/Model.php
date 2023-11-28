@@ -13,8 +13,7 @@ abstract class Model {
 
     public function __construct(array $fillable = [])
     {
-        $this->atts = !is_null($fillable) ? $this->_atts = $fillable : [];
-
+        $this->atts = $fillable;
     }
 
     public function __get($name)
