@@ -7,27 +7,27 @@ use iutnc\hellokant\query\Query;
 abstract class Model {
 
     protected static $table;
-    protected static $idColumn = 'id';
+    protected static $idColumn;
 
     protected $atts;
 
     public function __construct(array $fillable = [])
     {
-        $this->atts = $fillable;
+        $this->_atts = $fillable;
+
     }
 
-    public function __get($name)
-    {
-        if (in_array($name, $this->atts)) {
-            return $this->$name;
+    public function __get($nom) {
+        if (method_exists($this, $nom)) {
+            return $this->$nom();
         }
-        return null;
+        return array_key_exists($nom, $this->data) ? $this->data[$nom] : null;
     }
 
     public function __set($name, $value)
     {
         if (in_array($name, $this->atts)) {
-            $this->$name = $value;
+            $this->atts[$name] = $value;
         }
     }
 
@@ -101,12 +101,16 @@ abstract class Model {
             ->insert($args);
     }
 
-    public function belongs_to($table, $foreign_key): Model {
-        return $this;
+    public function belongs_to($table, $foreign_key): Query {
+        return Query::table(static::$table)
+            ->innerJoin($table, $foreign_key, static::$idColumn)
+            ->one();
     }
 
-    public function has_many($table, $foreign_key): Model {
-        return $this;
+    public function has_many($table, $foreign_key): array {
+        return Query::table(static::$table)
+            ->innerJoin($table, $foreign_key, static::$idColumn)
+            ->get();
     }
 
 
