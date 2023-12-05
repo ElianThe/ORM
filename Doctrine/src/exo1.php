@@ -16,5 +16,14 @@ $entityManager = new EntityManager($connection, $config);
 
 $produitRepository = $entityManager->getRepository(Produit::class);
 
-$p = $produitRepository->find(1);
-print $p->libelle . "\n";
+$produit = $produitRepository->find(4);
+if ($produit) {
+    // Afficher les informations du produit
+    echo "ID: " . $produit->getId() . "\n";
+    echo "Numéro: " . $produit->getNumero() . "\n";
+    echo "Libellé: " . $produit->getLibelle() . "\n";
+    echo "Description: " . $produit->getDescription() . "\n";
+    echo "Image: " . $produit->getImage() . "\n";
+} else {
+    echo "Produit non trouvé.\n";
+}
