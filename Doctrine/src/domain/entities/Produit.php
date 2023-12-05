@@ -84,5 +84,45 @@ class Produit
         return $this->categorie;
     }
 
+    /**
+     * @param int $numero
+     */
+    public function setNumero(int $numero): void
+    {
+        $this->numero = $numero;
+    }
+
+    /**
+     * @param string $libelle
+     */
+    public function setLibelle(string $libelle): void
+    {
+        $this->libelle = $libelle;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @param Categorie $categorie
+     */
+    public function setCategorie(Categorie $categorie): void
+    {
+        $this->categorie = $categorie;
+    }
+
 
 }
