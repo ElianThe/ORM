@@ -1,5 +1,7 @@
 <?php
 
+namespace catadoct\catalog\domain\entities;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;

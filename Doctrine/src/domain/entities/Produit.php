@@ -1,6 +1,6 @@
 <?php
 
-namespace catadoct\catalog;
+namespace catadoct\catalog\domain\entities;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
