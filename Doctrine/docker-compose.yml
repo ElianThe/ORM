@@ -25,6 +25,8 @@ services :
       - "8080:8080"
     networks :
       - doctrine.net
+    depends_on:
+      - db_postgres
 
   services.php :
     image : canals/php
